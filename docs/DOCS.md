@@ -112,6 +112,15 @@ const counter = (state = 0, action) => { // state=0 is initial state
     }
 }
 ```
+
+## Combine Reducers
+
+A good pattern in Redux is to let different subreducers handle different parts
+of the state tree.
+
+There is also a function called `CombineReducers` that handles this
+functionality.
+
 ## Store
 
 Holds the complete state tree of the application. Has a reducer as input
@@ -141,3 +150,51 @@ let x = [1,2,3]
 
 console.log(fn(...x)) //expects 6
 ```
+
+## Best practices
+
+Having a component use getState(...)  is bad practice, because it makes the components
+difficult to test.
+
+## Provider
+
+The provider has one purpose, to “provide” the store to its child components.
+
+## Context
+
+Context can be used to implicitly pass the store down to child components.
+It's dependency injection.
+
+
+## connect
+
+Connects the store to the component.
+
+Handles context, i.e makes the store available to the component.
+
+Makes the component subscribe to the changes of the state (when component is mounted)
+
+Unsubscribes to the state when the component is unmounted.
+
+Pass the props (with the state included) and the dispatch action as input to the component
+
+```javascript
+const App = ({bla, dispatch}) => {
+    <div>
+        <button onClick={dispatch}> {bla} </button>
+    </div>
+}
+
+
+export default connect( // Creates a container component
+  (bla: State): state.bla., // map state to props, will be updated everytime state changes
+   dispatchBlah: () => dispatch({type: BLA}),
+  }), // function that is used to dispatch actions
+)(App); // Presentational component to be connected to the redux store
+```
+
+## Action creators
+
+If an action is dispatched from different places, it can be a good idea
+to declare it separately, to make sure it's dispatched the same way across the
+application. It also makes the app more maintainable.
